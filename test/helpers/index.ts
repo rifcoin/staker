@@ -17,10 +17,10 @@ import _ from 'lodash'
 import {
   TestERC20,
   INonfungiblePositionManager,
-  UniswapV3Staker,
-  IUniswapV3Pool,
+  RifainSwapStaker,
+  IRifainSwap,
   TestIncentiveId,
-} from '../../typechain'
+} from '../../typechain-types'
 import { HelperTypes } from './types'
 import { ActorFixture } from '../shared/actors'
 import { mintPosition } from '../shared/fixtures'
@@ -38,10 +38,10 @@ import { TestContext } from '../types'
 export class HelperCommands {
   actors: ActorFixture
   provider: MockProvider
-  staker: UniswapV3Staker
+  staker: RifainSwapStaker
   nft: INonfungiblePositionManager
   router: ISwapRouter
-  pool: IUniswapV3Pool
+  pool: IRifainSwap
   testIncentiveId: TestIncentiveId
 
   DEFAULT_INCENTIVE_DURATION = 2_000
@@ -59,10 +59,10 @@ export class HelperCommands {
     testIncentiveId,
   }: {
     provider: MockProvider
-    staker: UniswapV3Staker
+    staker: RifainSwapStaker
     nft: INonfungiblePositionManager
     router: ISwapRouter
-    pool: IUniswapV3Pool
+    pool: IRifainSwap
     actors: ActorFixture
     testIncentiveId: TestIncentiveId
   }) {
@@ -242,12 +242,12 @@ export class HelperCommands {
 
     await this.staker.connect(params.lp).withdrawToken(params.tokenId, params.lp.address, '0x', maxGas)
 
-    const { liquidity } = await this.nft.connect(params.lp).positions(params.tokenId)
+    const { disponible } = await this.nft.connect(params.lp).positions(params.tokenId)
 
     await this.nft.connect(params.lp).decreaseLiquidity(
       {
         tokenId: params.tokenId,
-        liquidity,
+        disponible,
         amount0Min: 0,
         amount1Min: 0,
         deadline: (await blockTimestamp()) + 1000,

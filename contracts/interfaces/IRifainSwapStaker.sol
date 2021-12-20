@@ -1,19 +1,19 @@
-// SPDX-License-Identifier: GPL-2.0-or-later
-pragma solidity =0.7.6;
+// SPDX-License-Identifier: MIT
+pragma solidity =0.8.6;
 pragma abicoder v2;
 
 import '@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol';
 
-import '@uniswap/v3-core/contracts/interfaces/IUniswapV3Factory.sol';
-import '@uniswap/v3-core/contracts/interfaces/IUniswapV3Pool.sol';
-import '@uniswap/v3-core/contracts/interfaces/IERC20Minimal.sol';
+import '@rifcoin/swap/contracts/interfaces/IRifainSwapFactory.sol';
+import '@rifcoin/swap/contracts/interfaces/IRifainSwap.sol';
+import '@rifcoin/swap/contracts/interfaces/IERC20Minimal.sol';
 
-import '@uniswap/v3-periphery/contracts/interfaces/INonfungiblePositionManager.sol';
-import '@uniswap/v3-periphery/contracts/interfaces/IMulticall.sol';
+import '@rifcoin/toolkit/contracts/interfaces/INonfungiblePositionManager.sol';
+import '@rifcoin/toolkit/contracts/interfaces/IMulticall.sol';
 
 /// @title Uniswap V3 Staker Interface
 /// @notice Allows staking nonfungible liquidity tokens in exchange for reward tokens
-interface IUniswapV3Staker is IERC721Receiver, IMulticall {
+interface IRifainSwapStaker is IERC721Receiver, IMulticall {
     /// @param rewardToken The token being distributed as a reward
     /// @param pool The Uniswap V3 pool
     /// @param startTime The time when the incentive program begins
@@ -21,14 +21,14 @@ interface IUniswapV3Staker is IERC721Receiver, IMulticall {
     /// @param refundee The address which receives any remaining reward tokens when the incentive is ended
     struct IncentiveKey {
         IERC20Minimal rewardToken;
-        IUniswapV3Pool pool;
+        IRifainSwap pool;
         uint256 startTime;
         uint256 endTime;
         address refundee;
     }
 
     /// @notice The Uniswap V3 Factory
-    function factory() external view returns (IUniswapV3Factory);
+    function factory() external view returns (IRifainSwapFactory);
 
     /// @notice The nonfungible position manager with which this staking contract is compatible
     function nonfungiblePositionManager() external view returns (INonfungiblePositionManager);
@@ -147,7 +147,7 @@ interface IUniswapV3Staker is IERC721Receiver, IMulticall {
     /// @param reward The amount of reward tokens to be distributed
     event IncentiveCreated(
         IERC20Minimal indexed rewardToken,
-        IUniswapV3Pool indexed pool,
+        IRifainSwap indexed pool,
         uint256 startTime,
         uint256 endTime,
         address refundee,

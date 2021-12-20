@@ -1,17 +1,17 @@
 {
-  "name": "@uniswap/v3-staker",
-  "description": "Canonical liquidity mining contract for Uniswap V3",
-  "license": "GPL-3.0-or-later",
-  "version": "1.0.2",
-  "homepage": "https://uniswap.org",
+  "name": "@rifcoin/staker",
+  "description": "Canonical liquidity mining contract for rifcoin swap",
+  "license": "MIT",
+  "version": "1.0.0",
+  "homepage": "https://rifcoin.io",
   "keywords": [
-    "uniswap",
-    "liquidity mining",
-    "v3"
+    "rifcoin",
+    "swap",
+    "liquidity mining"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Uniswap/uniswap-v3-staker"
+    "url": "https://github.com/rifcoin/staker"
   },
   "files": [
     "contracts",
@@ -25,27 +25,27 @@
     "node": ">=10"
   },
   "dependencies": {
-    "@openzeppelin/contracts": "3.4.1-solc-0.7-2",
-    "@uniswap/v3-core": "1.0.0",
-    "@uniswap/v3-periphery": "^1.0.1"
+    "@openzeppelin/contracts": "4.4.1",
+    "@rifcoin/swap": "^1.0.1",
+    "@rifcoin/toolkit": "1.0.0"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
     "@nomiclabs/hardhat-etherscan": "^2.1.8",
     "@nomiclabs/hardhat-waffle": "^2.0.1",
-    "@typechain/ethers-v5": "^7.0.0",
-    "@typechain/hardhat": "^2.0.1",
+    "@typechain/ethers-v5": "8.0.5",
+    "@typechain/hardhat": "^3.0.0",
     "@types/chai": "^4.2.6",
     "@types/console-log-level": "^1.4.0",
     "@types/lodash": "^4.14.170",
-    "@types/mocha": "^5.2.7",
-    "@typescript-eslint/eslint-plugin": "^4.26.0",
-    "@typescript-eslint/parser": "^4.26.0",
+    "@types/mocha": "9.0.0",
+    "@typescript-eslint/eslint-plugin": "^5.7.0",
+    "@typescript-eslint/parser": "^5.7.0",
     "chai": "^4.2.0",
     "console-log-level": "^1.4.1",
-    "eslint": "^7.28.0",
+    "eslint": "^8.5.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-unused-imports": "^1.1.1",
+    "eslint-plugin-unused-imports": "^2.0.0",
     "ethereum-waffle": "^3.0.2",
     "ethers": "^5.0.8",
     "hardhat": "^2.2.0",
@@ -58,8 +58,8 @@
     "solhint": "^3.2.1",
     "solhint-plugin-prettier": "^0.0.5",
     "solidity-coverage": "^0.7.16",
-    "ts-node": "^8.5.4",
-    "typechain": "^5.0.0",
+    "ts-node": "^10.4.0",
+    "typechain": "^6.0.5",
     "typescript": "^4.3.2"
   },
   "scripts": {

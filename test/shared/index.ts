@@ -1,12 +1,12 @@
-export * from './external/v3-periphery/constants'
-export * from './external/v3-periphery/ticks'
-export * from './external/v3-periphery/tokenSort'
+export * from './external/toolkit/constants'
+export * from './external/toolkit/ticks'
+export * from './external/toolkit/tokenSort'
 export * from './fixtures'
 export * from './actors'
 export * from './logging'
 export * from './ticks'
 
-import { FeeAmount } from './external/v3-periphery/constants'
+import { FeeAmount } from './external/toolkit/constants'
 import { provider } from './provider'
 import { BigNumber, BigNumberish, Contract, ContractTransaction } from 'ethers'
 import { TransactionReceipt, TransactionResponse } from '@ethersproject/abstract-provider'
@@ -18,7 +18,7 @@ import { expect, use } from 'chai'
 import { solidity } from 'ethereum-waffle'
 import { jestSnapshotPlugin } from 'mocha-chai-jest-snapshot'
 
-import { IUniswapV3Pool, TestERC20 } from '../../typechain'
+import { IRifainSwap, TestERC20 } from '../../typechain-types'
 import { isArray, isString } from 'lodash'
 import { ethers } from 'hardhat'
 
@@ -115,7 +115,7 @@ export const maxGas = {
 }
 export const days = (n: number) => 86_400 * n
 
-export const getSlot0 = async (pool: IUniswapV3Pool) => {
+export const getSlot0 = async (pool: IRifainSwap) => {
   if (!pool.signer) {
     throw new Error('Cannot getSlot0 without a signer')
   }
@@ -123,7 +123,7 @@ export const getSlot0 = async (pool: IUniswapV3Pool) => {
 }
 
 // This is currently lpUser0 but can be called from anybody.
-export const getCurrentTick = async (pool: IUniswapV3Pool): Promise<number> => (await getSlot0(pool)).tick
+export const getCurrentTick = async (pool: IRifainSwap): Promise<number> => (await getSlot0(pool)).tick
 
 export const arrayWrap = (x: any) => {
   if (!isArray(x)) {

@@ -2,24 +2,24 @@ import { Fixture } from 'ethereum-waffle'
 import { constants } from 'ethers'
 import { ethers, waffle } from 'hardhat'
 
-import UniswapV3Pool from '@uniswap/v3-core/artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json'
-import UniswapV3FactoryJson from '@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json'
-import NFTDescriptorJson from '@uniswap/v3-periphery/artifacts/contracts/libraries/NFTDescriptor.sol/NFTDescriptor.json'
-import NonfungiblePositionManagerJson from '@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json'
-import NonfungibleTokenPositionDescriptor from '@uniswap/v3-periphery/artifacts/contracts/NonfungibleTokenPositionDescriptor.sol/NonfungibleTokenPositionDescriptor.json'
-import SwapRouter from '@uniswap/v3-periphery/artifacts/contracts/SwapRouter.sol/SwapRouter.json'
+import RifainSwap from '@rifcoin/swap/artifacts/contracts/RifainSwap.sol/RifainSwap.json'
+import RifainSwapFactoryJson from '@rifcoin/swap/artifacts/contracts/RifainSwapFactory.sol/RifainSwapFactory.json'
+import NFTDescriptorJson from '@rifcoin/toolkit/artifacts/contracts/libraries/NFTDescriptor.sol/NFTDescriptor.json'
+import NonfungiblePositionManagerJson from '@rifcoin/toolkit/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json'
+import NonfungibleTokenPositionDescriptor from '@rifcoin/toolkit/artifacts/contracts/NonfungibleTokenPositionDescriptor.sol/NonfungibleTokenPositionDescriptor.json'
+import SwapRouter from '@rifcoin/toolkit/artifacts/contracts/SwapRouter.sol/SwapRouter.json'
 import WETH9 from './external/WETH9.json'
 import { linkLibraries } from './linkLibraries'
 import { ISwapRouter } from '../../types/ISwapRouter'
 import { IWETH9 } from '../../types/IWETH9'
 import {
-  UniswapV3Staker,
+  RifainSwapStaker,
   TestERC20,
   INonfungiblePositionManager,
-  IUniswapV3Factory,
-  IUniswapV3Pool,
+  IRifainSwapFactory,
+  IRifainSwap,
   TestIncentiveId,
-} from '../../typechain'
+} from '../../typechain-types'
 import { NFTDescriptor } from '../../types/NFTDescriptor'
 import { FeeAmount, BigNumber, encodePriceSqrt, MAX_GAS_LIMIT } from '../shared'
 import { ActorFixture } from './actors'
@@ -35,16 +35,16 @@ export const wethFixture: Fixture<WETH9Fixture> = async ([wallet]) => {
   return { weth9 }
 }
 
-const v3CoreFactoryFixture: Fixture<IUniswapV3Factory> = async ([wallet]) => {
+const v3CoreFactoryFixture: Fixture<IRifainSwapFactory> = async ([wallet]) => {
   return ((await waffle.deployContract(wallet, {
-    bytecode: UniswapV3FactoryJson.bytecode,
-    abi: UniswapV3FactoryJson.abi,
-  })) as unknown) as IUniswapV3Factory
+    bytecode: RifainSwapFactoryJson.bytecode,
+    abi: RifainSwapFactoryJson.abi,
+  })) as unknown) as IRifainSwapFactory
 }
 
 export const v3RouterFixture: Fixture<{
   weth9: IWETH9
-  factory: IUniswapV3Factory
+  factory: IRifainSwapFactory
   router: ISwapRouter
 }> = async ([wallet], provider) => {
   const { weth9 } = await wethFixture([wallet], provider)
@@ -61,6 +61,7 @@ export const v3RouterFixture: Fixture<{
   return { factory, weth9, router }
 }
 
+
 const nftDescriptorLibraryFixture: Fixture<NFTDescriptor> = async ([wallet]) => {
   return (await waffle.deployContract(wallet, {
     bytecode: NFTDescriptorJson.bytecode,
@@ -68,9 +69,10 @@ const nftDescriptorLibraryFixture: Fixture<NFTDescriptor> = async ([wallet]) => 
   })) as NFTDescriptor
 }
 
+
 type UniswapFactoryFixture = {
   weth9: IWETH9
-  factory: IUniswapV3Factory
+  factory: IRifainSwapFactory
   router: ISwapRouter
   nft: INonfungiblePositionManager
   tokens: [TestERC20, TestERC20, TestERC20]
@@ -102,7 +104,7 @@ export const uniswapFactoryFixture: Fixture<UniswapFactoryFixture> = async (wall
       },
     },
     {
-      NFTDescriptor: nftDescriptorLibrary.address,
+     NFTDescriptor: nftDescriptorLibrary.address,
     }
   )
 
@@ -120,12 +122,13 @@ export const uniswapFactoryFixture: Fixture<UniswapFactoryFixture> = async (wall
     NonfungiblePositionManagerJson.bytecode,
     wallets[0]
   )
+  
   const nft = (await nftFactory.deploy(
     factory.address,
     weth9.address,
     positionDescriptor.address
   )) as INonfungiblePositionManager
-
+  
   tokens.sort((a, b) => (a.address.toLowerCase() < b.address.toLowerCase() ? -1 : 1))
 
   return {
@@ -135,6 +138,7 @@ export const uniswapFactoryFixture: Fixture<UniswapFactoryFixture> = async (wall
     tokens,
     nft,
   }
+  
 }
 
 export const mintPosition = async (
@@ -199,14 +203,14 @@ export const mintPosition = async (
 }
 
 export type UniswapFixtureType = {
-  factory: IUniswapV3Factory
+  factory: IRifainSwapFactory
   fee: FeeAmount
   nft: INonfungiblePositionManager
   pool01: string
   pool12: string
-  poolObj: IUniswapV3Pool
+  poolObj: IRifainSwap
   router: ISwapRouter
-  staker: UniswapV3Staker
+  staker: RifainSwapStaker
   testIncentiveId: TestIncentiveId
   tokens: [TestERC20, TestERC20, TestERC20]
   token0: TestERC20
@@ -216,8 +220,8 @@ export type UniswapFixtureType = {
 export const uniswapFixture: Fixture<UniswapFixtureType> = async (wallets, provider) => {
   const { tokens, nft, factory, router } = await uniswapFactoryFixture(wallets, provider)
   const signer = new ActorFixture(wallets, provider).stakerDeployer()
-  const stakerFactory = await ethers.getContractFactory('UniswapV3Staker', signer)
-  const staker = (await stakerFactory.deploy(factory.address, nft.address, 2 ** 32, 2 ** 32)) as UniswapV3Staker
+  const stakerFactory = await ethers.getContractFactory('RifainSwapStaker', signer)
+  const staker = (await stakerFactory.deploy(factory.address, nft.address, 2 ** 32, 2 ** 32)) as RifainSwapStaker
 
   const testIncentiveIdFactory = await ethers.getContractFactory('TestIncentiveId', signer)
   const testIncentiveId = (await testIncentiveIdFactory.deploy()) as TestIncentiveId
@@ -235,7 +239,7 @@ export const uniswapFixture: Fixture<UniswapFixtureType> = async (wallets, provi
 
   const pool12 = await factory.getPool(tokens[1].address, tokens[2].address, fee)
 
-  const poolObj = poolFactory.attach(pool01) as IUniswapV3Pool
+  const poolObj = poolFactory.attach(pool01) as IRifainSwap
 
   return {
     nft,
@@ -254,4 +258,4 @@ export const uniswapFixture: Fixture<UniswapFixtureType> = async (wallets, provi
   }
 }
 
-export const poolFactory = new ethers.ContractFactory(UniswapV3Pool.abi, UniswapV3Pool.bytecode)
+export const poolFactory = new ethers.ContractFactory(RifainSwap.abi, RifainSwap.bytecode)

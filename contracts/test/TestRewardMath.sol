@@ -1,8 +1,8 @@
-// SPDX-License-Identifier: GPL-2.0-or-later
-pragma solidity =0.7.6;
+// SPDX-License-Identifier: MIT
+pragma solidity =0.8.6;
 pragma abicoder v2;
 
-import '../interfaces/IUniswapV3Staker.sol';
+import '../interfaces/IRifainSwapStaker.sol';
 
 import '../libraries/RewardMath.sol';
 
