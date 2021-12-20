@@ -2,7 +2,7 @@
   "name": "@rifcoin/staker",
   "description": "Canonical liquidity mining contract for rifcoin swap",
   "license": "MIT",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "homepage": "https://rifcoin.io",
   "keywords": [
     "rifcoin",
@@ -27,7 +27,7 @@
   "dependencies": {
     "@openzeppelin/contracts": "4.4.1",
     "@rifcoin/swap": "^1.0.1",
-    "@rifcoin/toolkit": "1.0.0"
+    "@rifcoin/toolkit": "^1.0.1"
   },
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",

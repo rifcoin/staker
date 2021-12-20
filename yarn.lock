@@ -994,24 +994,19 @@
   resolved "https://registry.yarnpkg.com/@rifcoin/lib/-/lib-1.0.0.tgz#6c9b7ee45518f18df4e0eb87f661617ab3392687"
   integrity sha512-WqwGTSG49O0eG14zlHpXlc3NAd2VH8c0QmjgNN/+Ep1Um0z+NdVXne8KyQ/g6TR+x5A03DmREloQfSjpXfkdSQ==
 
-"@rifcoin/swap@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@rifcoin/swap/-/swap-1.0.0.tgz#1521789b36ee2cbac26190671a4b22ec95b8cfff"
-  integrity sha512-WL+bRbYAUGIpJsv9brEYAaPN1tw3R4VqU1w6WTqt4YykrLdsk7w9U5pPNwbcG/bqUSsNR/MG92YqDevYvFWh/w==
-
-"@rifcoin/swap@^1.0.1":
+"@rifcoin/swap@1.0.1", "@rifcoin/swap@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@rifcoin/swap/-/swap-1.0.1.tgz#07813812b71a8995be330ce2f9508fb8a2246968"
   integrity sha512-ky2ePHOVF7aRan7SG2u8/Lh4v5UKW4ni+QVAPczzNHQORt3O6zAPs+ER56W/aRF1KcYh9h2Prqtode8Pe3RRNg==
 
-"@rifcoin/toolkit@1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@rifcoin/toolkit/-/toolkit-1.0.0.tgz#c21bac522e39714b002f04aac8dc1806ed668896"
-  integrity sha512-E7sz9VDjs1kFzRIIbPSiKY78+usgz6b5sp+mnEorCQyCnjhIe/BzCDC2FffOTLBL/8j6cwJEZLhAb1zi3SiwjA==
+"@rifcoin/toolkit@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@rifcoin/toolkit/-/toolkit-1.0.1.tgz#8cae0534eba0a3d273854fa3b3862723d91c15ef"
+  integrity sha512-jWxvSouXewP/zxOpkJrBzlnDsAaicCbItnBtPdC4OHGXhX1M5xtrdTITHXYd81UG7CSfJutMfXAet1fWx20Nsw==
   dependencies:
     "@openzeppelin/contracts" "^4.4.1"
     "@rifcoin/lib" "1.0.0"
-    "@rifcoin/swap" "1.0.0"
+    "@rifcoin/swap" "1.0.1"
     base64-sol "1.1.0"
     hardhat-watcher "^2.1.1"
 
